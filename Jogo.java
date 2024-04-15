@@ -88,6 +88,41 @@ public class Jogo extends JFrame implements KeyListener {
         addKeyListener(this);
     }
 
+    public void distibuiMoedas() {
+        int numMoedas = 3;
+        for (int i = 0; i < numMoedas; i++) {
+            int x = (int) (Math.random() * mapa.getNumColunas());
+            int y = (int) (Math.random() * mapa.getNumLinhas());
+            if (mapa.getElemento(x, y) == null) {
+                mapa.setElemento('M', x, y);
+            }
+        }
+    }
+
+    public void movimentaInimigo() {
+        Inimigo inimigo = (Inimigo) mapa.getElemento('I');
+        int x = inimigo.getX();
+        int y = inimigo.getY();
+        int dx = x+1;
+        int dy = y;
+        if (!mapa.moveElemento(x, y, dx, dy)) {
+            dx = x-1;
+            dy = y;
+            if (!mapa.moveElemento(x, y, dx, dy)) {
+                dx = x;
+                dy = y-1;
+                if (!mapa.moveElemento(x, y, dx, dy)) {
+                    dx = x-1;
+                    dy = y;
+                    if (!mapa.moveElemento(x, y, dx, dy)) {
+                        return;
+                    }
+                }
+            }
+        }
+        inimigo.setPosicao(dx, dy);
+    }
+
     public void move(Direcao direcao) {
         if (mapa == null)
             return;
@@ -99,6 +134,9 @@ public class Jogo extends JFrame implements KeyListener {
         // Atualiza a barra de status
         if (statusBar != null)
             statusBar.setText("Posição: (" + mapa.getPosX() + "," + mapa.getPosY() + ")");
+
+        distibuiMoedas();
+        movimentaInimigo();
 
         // Redesenha o painel
         repaint();

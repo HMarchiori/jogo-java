@@ -16,6 +16,7 @@ public class Mapa {
     private boolean[][] areaRevelada; // Rastreia quais partes do mapa foram reveladas
     private final Color brickColor = new Color(153, 76, 0); // Cor marrom para tijolos
     private final Color vegetationColor = new Color(34, 139, 34); // Cor verde para vegetação
+    private final Color goldColor = new Color(181, 148, 16); // Cor dourada para moedas
     private final int RAIO_VISAO = 5; // Raio de visão do personagem
 
     public Mapa(String arquivoMapa) {
@@ -47,9 +48,74 @@ public class Mapa {
         return mapa.get(0).length();
     }
 
+    public ElementoMapa getElemento(Character id) {
+        return elementos.get(id);
+    }
+
     public ElementoMapa getElemento(int x, int y) {
         Character id = mapa.get(y).charAt(x);
         return elementos.get(id);
+    }
+
+
+    public boolean setElemento(Character id, int x, int y) {
+        if (x < 0 || x >= mapa.get(0).length() || y < 0 || y >= mapa.size()) {
+            System.out.println("Fora do mapa");
+            return false;
+        }
+
+        StringBuilder sb = new StringBuilder(mapa.get(y));
+        System.out.println("Antes: " + mapa.get(y));
+        sb.setCharAt(x, id);
+        mapa.set(y, sb.toString());
+        System.out.println("Depois: " + mapa.get(y));
+        return true;
+    }
+
+    public boolean setElemento(ElementoMapa elemento, int x, int y) {
+        // Econtra chave do elemento no set
+        for (Map.Entry<Character, ElementoMapa> entry : elementos.entrySet()) {
+            if (entry.getValue().equals(elemento)) {
+                return setElemento(entry.getKey(), x, y);
+            }
+        }
+        System.out.println("Elemento não encontrado");
+        return false;
+    }
+
+    public boolean apagaElemento(int x, int y) {
+        return setElemento(' ', x, y);
+    }
+
+    public boolean moveElemento(int xOrigem, int yOrigem, int xDestino, int yDestino) {
+        if (xOrigem < 0 || xOrigem >= mapa.get(0).length() || yOrigem < 0 || yOrigem >= mapa.size() ||
+            xDestino < 0 || xDestino >= mapa.get(0).length() || yDestino < 0 || yDestino >= mapa.size()) {
+            System.out.println("Fora do mapa");
+            return false;
+        }
+
+        Character id = mapa.get(yOrigem).charAt(xOrigem);
+        if (id == ' ') {
+            System.out.println("Não há elemento na origem");
+            return false;
+        }
+
+        if (getElemento(xDestino, yDestino) != null) {
+            System.out.println("Já existe um elemento no destino");
+            return false;
+        }
+
+        if (!setElemento(id, xDestino, yDestino)) {
+            System.out.println("Não foi possível mover o elemento");
+            return false;
+        }
+
+        if (!apagaElemento(xOrigem, yOrigem)) {
+            System.out.println("Não foi possível apagar o elemento");
+            return false;
+        }
+
+        return true;
     }
 
     public boolean estaRevelado(int x, int y) {
@@ -165,5 +231,9 @@ public class Mapa {
         elementos.put('#', new Parede('▣', brickColor));
         // Vegetação
         elementos.put('V', new Vegetacao('♣', vegetationColor));
+        // Inimigo
+        elementos.put('I', new Inimigo('☠', Color.RED));
+        // Moeda
+        elementos.put('M', new Moeda('♦', goldColor));
     }
 }
