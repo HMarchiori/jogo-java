@@ -7,6 +7,8 @@ public class Inimigo implements ElementoMapa, Runnable {
     private int y = 1;
     private Jogo jogo;
     private Thread thread;
+    private boolean movendoDireita = true;
+    private boolean moverParaBaixo = true;
 
     public Inimigo(Character simbolo, Color cor, Jogo jogo) {
         this.simbolo = simbolo;
@@ -58,33 +60,66 @@ public class Inimigo implements ElementoMapa, Runnable {
     public void run() {
         while (true) {
             try {
-                Thread.sleep(500); // Move every second
-                moveInimigo();
+                Thread.sleep(300);
+                moverInimigo();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    private void moveInimigo() {
-        int dx = x + 1;
-        int dy = y;
-        if (!jogo.getMapa().moveElemento(x, y, dx, dy)) {
-            dx = x - 1;
-            dy = y;
-            if (!jogo.getMapa().moveElemento(x, y, dx, dy)) {
-                dx = x;
-                dy = y - 1;
-                if (!jogo.getMapa().moveElemento(x, y, dx, dy)) {
-                    dx = x;
-                    dy = y + 1;
-                    if (!jogo.getMapa().moveElemento(x, y, dx, dy)) {
-                        return;
+    private void moverInimigo() {
+        boolean movido = false;
+
+        if (movendoDireita) {
+            // Tentar mover para a direita
+            if (jogo.getMapa().moveElemento(x, y, x + 1, y)) {
+                setPosicao(x + 1, y);
+                movido = true;
+            } else {
+                // Se não puder mover para a direita, mover para baixo ou para cima
+                if (moverParaBaixo) {
+                    if (jogo.getMapa().moveElemento(x, y, x, y + 1)) {
+                        setPosicao(x, y + 1);
+                        movendoDireita = false;
+                        movido = true;
+                    }
+                } else {
+                    if (jogo.getMapa().moveElemento(x, y, x, y - 1)) {
+                        setPosicao(x, y - 1);
+                        movendoDireita = false;
+                        movido = true;
+                    }
+                }
+            }
+        } else {
+            // Tentar mover para a esquerda
+            if (jogo.getMapa().moveElemento(x, y, x - 1, y)) {
+                setPosicao(x - 1, y);
+                movido = true;
+            } else {
+                // Se não puder mover para a esquerda, mover para baixo ou para cima
+                if (moverParaBaixo) {
+                    if (jogo.getMapa().moveElemento(x, y, x, y + 1)) {
+                        setPosicao(x, y + 1);
+                        movendoDireita = true;
+                        movido = true;
+                    }
+                } else {
+                    if (jogo.getMapa().moveElemento(x, y, x, y - 1)) {
+                        setPosicao(x, y - 1);
+                        movendoDireita = true;
+                        movido = true;
                     }
                 }
             }
         }
-        setPosicao(dx, dy);
+
+        // Se estiver bloqueado (incapaz de se mover), alternar moverParaBaixo e tentar novamente
+        if (!movido) {
+            moverParaBaixo = !moverParaBaixo;
+        }
+
         jogo.repaint();
     }
 }
