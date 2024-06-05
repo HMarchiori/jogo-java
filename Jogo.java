@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 public class Jogo extends JFrame implements KeyListener {
     private JLabel statusBar;
     private Mapa mapa;
+    private int numMoedas = 0; // Contador de moedas
     private final Color fogColor = new Color(192, 192, 192, 150); // Cor cinza claro com transparência para nevoa
     private final Color characterColor = Color.BLACK; // Cor preta para o personagem
 
@@ -67,7 +68,7 @@ public class Jogo extends JFrame implements KeyListener {
         buttonPanel.add(btnAttack);
 
         // Barra de status
-        statusBar = new JLabel("Posição: (" + mapa.getPosX() + "," + mapa.getPosY() + ")");
+        statusBar = new JLabel("Posição: (" + mapa.getPosX() + "," + mapa.getPosY() + ") | Moedas: " + numMoedas);
         statusBar.setBorder(BorderFactory.createEtchedBorder());
         statusBar.setHorizontalAlignment(SwingConstants.LEFT);
 
@@ -131,9 +132,18 @@ public class Jogo extends JFrame implements KeyListener {
         if (!mapa.move(direcao))
             return;
 
+        // Verifica se o jogador pegou uma moeda
+        int mapX = mapa.getPosX() / mapa.getTamanhoCelula();
+        int mapY = mapa.getPosY() / mapa.getTamanhoCelula() - 1;
+        ElementoMapa elemento = mapa.getElemento(mapX, mapY);
+        if (elemento instanceof Moeda) {
+            numMoedas++;
+            mapa.apagaElemento(mapX, mapY);
+        }
+
         // Atualiza a barra de status
         if (statusBar != null)
-            statusBar.setText("Posição: (" + mapa.getPosX() + "," + mapa.getPosY() + ")");
+            statusBar.setText("Posição: (" + mapa.getPosX() + "," + mapa.getPosY() + ") | Moedas: " + numMoedas);
 
         distibuiMoedas();
         movimentaInimigo();

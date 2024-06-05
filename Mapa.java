@@ -57,7 +57,6 @@ public class Mapa {
         return elementos.get(id);
     }
 
-
     public boolean setElemento(Character id, int x, int y) {
         if (x < 0 || x >= mapa.get(0).length() || y < 0 || y >= mapa.size()) {
             System.out.println("Fora do mapa");
