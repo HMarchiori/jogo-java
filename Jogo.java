@@ -87,6 +87,20 @@ public class Jogo extends JFrame implements KeyListener {
 
         // Adiciona o listener para eventos de teclado
         addKeyListener(this);
+
+        // Registra os elementos do mapa
+        // Parede
+        mapa.registraElemento('#', new Parede('▣', Mapa.brickColor));
+        // Vegetação
+        mapa.registraElemento('V', new Vegetacao('♣', Mapa.vegetationColor));
+        // Inimigo
+        mapa.registraElemento('I', new Inimigo('☠', Color.RED, this));
+        // Moeda
+        mapa.registraElemento('M', new Moeda('♦', Mapa.goldColor));
+    }
+
+    public Mapa getMapa() {
+        return mapa;
     }
 
     public void distibuiMoedas() {
@@ -102,26 +116,9 @@ public class Jogo extends JFrame implements KeyListener {
 
     public void movimentaInimigo() {
         Inimigo inimigo = (Inimigo) mapa.getElemento('I');
-        int x = inimigo.getX();
-        int y = inimigo.getY();
-        int dx = x+1;
-        int dy = y;
-        if (!mapa.moveElemento(x, y, dx, dy)) {
-            dx = x-1;
-            dy = y;
-            if (!mapa.moveElemento(x, y, dx, dy)) {
-                dx = x;
-                dy = y-1;
-                if (!mapa.moveElemento(x, y, dx, dy)) {
-                    dx = x-1;
-                    dy = y;
-                    if (!mapa.moveElemento(x, y, dx, dy)) {
-                        return;
-                    }
-                }
-            }
+        if (inimigo != null) {
+            inimigo.run();
         }
-        inimigo.setPosicao(dx, dy);
     }
 
     public void move(Direcao direcao) {
@@ -146,7 +143,6 @@ public class Jogo extends JFrame implements KeyListener {
             statusBar.setText("Posição: (" + mapa.getPosX() + "," + mapa.getPosY() + ") | Moedas: " + numMoedas);
 
         distibuiMoedas();
-        movimentaInimigo();
 
         // Redesenha o painel
         repaint();

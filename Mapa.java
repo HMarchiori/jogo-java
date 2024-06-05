@@ -14,15 +14,14 @@ public class Mapa {
     private int posY = 50; // Posição inicial Y do personagem
     private final int TAMANHO_CELULA = 10; // Tamanho de cada célula do mapa
     private boolean[][] areaRevelada; // Rastreia quais partes do mapa foram reveladas
-    private final Color brickColor = new Color(153, 76, 0); // Cor marrom para tijolos
-    private final Color vegetationColor = new Color(34, 139, 34); // Cor verde para vegetação
-    private final Color goldColor = new Color(181, 148, 16); // Cor dourada para moedas
+    public static final Color brickColor = new Color(153, 76, 0); // Cor marrom para tijolos
+    public static final Color vegetationColor = new Color(34, 139, 34); // Cor verde para vegetação
+    public static final Color goldColor = new Color(181, 148, 16); // Cor dourada para moedas
     private final int RAIO_VISAO = 5; // Raio de visão do personagem
 
     public Mapa(String arquivoMapa) {
         mapa = new ArrayList<>();
         elementos = new HashMap<>();
-        registraElementos();
         carregaMapa(arquivoMapa);
         areaRevelada = new boolean[mapa.size()+1000][mapa.get(0).length()+1000];
         atualizaCelulasReveladas();
@@ -224,15 +223,7 @@ public class Mapa {
         }
     }
 
-    // Registra os elementos do mapa
-    private void registraElementos() {
-        // Parede
-        elementos.put('#', new Parede('▣', brickColor));
-        // Vegetação
-        elementos.put('V', new Vegetacao('♣', vegetationColor));
-        // Inimigo
-        elementos.put('I', new Inimigo('☠', Color.RED));
-        // Moeda
-        elementos.put('M', new Moeda('♦', goldColor));
+    public void registraElemento(Character simbolo, ElementoMapa elementoMapa) {
+        elementos.put(simbolo, elementoMapa);
     }
 }
