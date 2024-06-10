@@ -4,6 +4,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Random;
 
 public class Jogo extends JFrame implements KeyListener {
     private JLabel statusBar;
@@ -83,6 +84,9 @@ public class Jogo extends JFrame implements KeyListener {
         mapa.registraElemento('M', new Moeda('♦', Mapa.goldColor));
 
         ajustaTamanhoCelula();
+
+        // Distribui moedas no mapa de forma aleatória de acordo com a semente
+        distibuiMoedas(100, 1L);
     }
 
     private void ajustaTamanhoCelula() {
@@ -118,11 +122,11 @@ public class Jogo extends JFrame implements KeyListener {
         return mapa;
     }
 
-    public void distibuiMoedas() {
-        int numMoedas = 3;
+    public void distibuiMoedas(int numMoedas, long seed) {
+        Random random = new Random(seed);
         for (int i = 0; i < numMoedas; i++) {
-            int x = (int) (Math.random() * mapa.getNumColunas());
-            int y = (int) (Math.random() * mapa.getNumLinhas());
+            int x = random.nextInt(mapa.getNumColunas());
+            int y = random.nextInt(mapa.getNumLinhas());
             if (x >= 0 && x < mapa.getNumColunas() && y >= 0 && y < mapa.getNumLinhas() && mapa.getElemento(x, y) == null) {
                 mapa.setElemento('M', x, y);
             }
@@ -156,8 +160,6 @@ public class Jogo extends JFrame implements KeyListener {
         // Atualiza a barra de status
         if (statusBar != null)
             statusBar.setText("Posição: (" + mapa.getPosX() + "," + mapa.getPosY() + ") | Moedas: " + numMoedas);
-
-        distibuiMoedas();
 
         // Redesenha o painel
         repaint();
