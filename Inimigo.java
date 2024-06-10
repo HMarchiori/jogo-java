@@ -120,6 +120,7 @@ public class Inimigo implements ElementoMapa, Runnable {
             moverParaBaixo = !moverParaBaixo;
         }
 
+        jogo.verificaProximidade(this);
         jogo.repaint();
     }
 }

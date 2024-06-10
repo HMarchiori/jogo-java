@@ -13,6 +13,7 @@ public class Jogo extends JFrame implements KeyListener {
     private int width = 1600;
     private int height = 1200;
     private int numMoedas = 0; // Contador de moedas
+    private int vidas = 3; // Número de vidas do jogador
     private final Color fogColor = new Color(192, 192, 192, 150); // Cor cinza claro com transparência para nevoa
     private final Color characterColor = Color.BLACK; // Cor preta para o personagem
     private int tamanhoFonte;
@@ -54,7 +55,7 @@ public class Jogo extends JFrame implements KeyListener {
         });
 
         // Barra de status
-        statusBar = new JLabel("Posição: (" + mapa.getPosX() + "," + mapa.getPosY() + ") | Moedas: " + numMoedas);
+        statusBar = new JLabel(getStatusBarText());
         statusBar.setBorder(BorderFactory.createEtchedBorder());
         statusBar.setHorizontalAlignment(SwingConstants.LEFT);
 
@@ -87,6 +88,10 @@ public class Jogo extends JFrame implements KeyListener {
 
         // Distribui moedas no mapa de forma aleatória de acordo com a semente
         distibuiMoedas(100, 1L);
+    }
+
+    private String getStatusBarText() {
+        return "Posição: (" + mapa.getPosX() + "," + mapa.getPosY() + ") | Moedas: " + numMoedas + " | Vidas: " + vidas;
     }
 
     private void ajustaTamanhoCelula() {
@@ -159,7 +164,7 @@ public class Jogo extends JFrame implements KeyListener {
 
         // Atualiza a barra de status
         if (statusBar != null)
-            statusBar.setText("Posição: (" + mapa.getPosX() + "," + mapa.getPosY() + ") | Moedas: " + numMoedas);
+            statusBar.setText(getStatusBarText());
 
         // Redesenha o painel
         repaint();
@@ -185,6 +190,26 @@ public class Jogo extends JFrame implements KeyListener {
         // Atualiza a barra de status
         if (statusBar != null)
             statusBar.setText(status);
+    }
+
+    public void verificaProximidade(Inimigo inimigo) {
+        int inimigoX = inimigo.getX() * mapa.getTamanhoCelula();
+        int inimigoY = inimigo.getY() * mapa.getTamanhoCelula();
+        int personagemX = mapa.getPosX();
+        int personagemY = mapa.getPosY();
+
+        int distanciaX = Math.abs(inimigoX - personagemX);
+        int distanciaY = Math.abs(inimigoY - personagemY);
+
+        if (distanciaX <= mapa.getTamanhoCelula() && distanciaY <= mapa.getTamanhoCelula()) {
+            vidas--;
+            statusBar.setText(getStatusBarText());
+            if (vidas <= 0) {
+                JOptionPane.showMessageDialog(this, "Game Over!");
+                vidas = 1;
+                return;
+            }
+        }
     }
 
     private void desenhaMapa(Graphics g) {
