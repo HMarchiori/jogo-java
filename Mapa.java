@@ -12,18 +12,19 @@ public class Mapa {
     private Map<Character, ElementoMapa> elementos;
     private int posX = 50; // Posição inicial X do personagem
     private int posY = 50; // Posição inicial Y do personagem
-    private final int TAMANHO_CELULA = 10; // Tamanho de cada célula do mapa
     private boolean[][] areaRevelada; // Rastreia quais partes do mapa foram reveladas
     public static final Color brickColor = new Color(153, 76, 0); // Cor marrom para tijolos
     public static final Color vegetationColor = new Color(34, 139, 34); // Cor verde para vegetação
     public static final Color goldColor = new Color(181, 148, 16); // Cor dourada para moedas
     private final int RAIO_VISAO = 5; // Raio de visão do personagem
+    private int tamanhoCelula;
 
-    public Mapa(String arquivoMapa) {
+    public Mapa(String arquivoMapa, int tamanhoCelula) {
+        this.tamanhoCelula = tamanhoCelula;
         mapa = new ArrayList<>();
         elementos = new HashMap<>();
         carregaMapa(arquivoMapa);
-        areaRevelada = new boolean[mapa.size()+1000][mapa.get(0).length()+1000];
+        areaRevelada = new boolean[mapa.size()][mapa.get(0).length()];
         atualizaCelulasReveladas();
     }
 
@@ -36,7 +37,11 @@ public class Mapa {
     }
 
     public int getTamanhoCelula() {
-        return TAMANHO_CELULA;
+        return tamanhoCelula;
+    }
+
+    public void setTamanhoCelula(int tamanhoCelula) {
+        this.tamanhoCelula = tamanhoCelula;
     }
 
     public int getNumLinhas() {
@@ -52,6 +57,9 @@ public class Mapa {
     }
 
     public ElementoMapa getElemento(int x, int y) {
+        if (x < 0 || x >= mapa.get(0).length() || y < 0 || y >= mapa.size()) {
+            return null;
+        }
         Character id = mapa.get(y).charAt(x);
         return elementos.get(id);
     }
@@ -63,10 +71,10 @@ public class Mapa {
         }
 
         StringBuilder sb = new StringBuilder(mapa.get(y));
-        System.out.println("Antes: " + mapa.get(y));
+        // System.out.println("Antes: " + mapa.get(y));
         sb.setCharAt(x, id);
         mapa.set(y, sb.toString());
-        System.out.println("Depois: " + mapa.get(y));
+        // System.out.println("Depois: " + mapa.get(y));
         return true;
     }
 
@@ -126,16 +134,16 @@ public class Mapa {
 
         switch (direcao) {
             case CIMA:
-                dy = -TAMANHO_CELULA;
+                dy = -tamanhoCelula;
                 break;
             case BAIXO:
-                dy = TAMANHO_CELULA;
+                dy = tamanhoCelula;
                 break;
             case ESQUERDA:
-                dx = -TAMANHO_CELULA;
+                dx = -tamanhoCelula;
                 break;
             case DIREITA:
-                dx = TAMANHO_CELULA;
+                dx = tamanhoCelula;
                 break;
             default:
                 return false;
@@ -156,8 +164,8 @@ public class Mapa {
 
     // Verifica se o personagem pode se mover para a próxima posição
     private boolean podeMover(int nextX, int nextY) {
-        int mapX = nextX / TAMANHO_CELULA;
-        int mapY = nextY / TAMANHO_CELULA - 1;
+        int mapX = nextX / tamanhoCelula;
+        int mapY = nextY / tamanhoCelula - 1;
 
         if (mapa == null)
             return false;
@@ -201,8 +209,8 @@ public class Mapa {
                 mapa.add(line);
                 // Se character 'P' está contido na linha atual, então define a posição inicial do personagem
                 if (line.contains("P")) {
-                    posX = line.indexOf('P') * TAMANHO_CELULA;
-                    posY = mapa.size() * TAMANHO_CELULA;
+                    posX = line.indexOf('P') * tamanhoCelula;
+                    posY = mapa.size() * tamanhoCelula;
                     // Remove o personagem da linha para evitar que seja desenhado
                     mapa.set(mapa.size() - 1, line.replace('P', ' '));
                 }
@@ -216,8 +224,8 @@ public class Mapa {
     private void atualizaCelulasReveladas() {
         if (mapa == null)
             return;
-        for (int i = Math.max(0, posY / TAMANHO_CELULA - RAIO_VISAO); i < Math.min(mapa.size(), posY / TAMANHO_CELULA + RAIO_VISAO + 1); i++) {
-            for (int j = Math.max(0, posX / TAMANHO_CELULA - RAIO_VISAO); j < Math.min(mapa.get(i).length(), posX / TAMANHO_CELULA + RAIO_VISAO + 1); j++) {
+        for (int i = Math.max(0, posY / tamanhoCelula - RAIO_VISAO); i < Math.min(mapa.size(), posY / tamanhoCelula + RAIO_VISAO + 1); i++) {
+            for (int j = Math.max(0, posX / tamanhoCelula - RAIO_VISAO); j < Math.min(mapa.get(i).length(), posX / tamanhoCelula + RAIO_VISAO + 1); j++) {
                 areaRevelada[i][j] = true;
             }
         }

@@ -1,71 +1,56 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class Jogo extends JFrame implements KeyListener {
     private JLabel statusBar;
     private Mapa mapa;
+    private int tamanhoCelula = 20;
+    private int width = 1600;
+    private int height = 1200;
     private int numMoedas = 0; // Contador de moedas
     private final Color fogColor = new Color(192, 192, 192, 150); // Cor cinza claro com transparência para nevoa
     private final Color characterColor = Color.BLACK; // Cor preta para o personagem
+    private int tamanhoFonte;
+    private JPanel mapPanel;
 
     public Jogo(String arquivoMapa) {
         setTitle("Jogo de Aventura");
-        setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
 
         // Cria o mapa do jogo
-        mapa = new Mapa(arquivoMapa);
+        mapa = new Mapa(arquivoMapa, tamanhoCelula);
+
+        // Tamanho inicial da janela
+        setSize(width, height);
 
         // Painel para desenhar o mapa do jogo
-        JPanel mapPanel = new JPanel() {
+        mapPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                // Define a fonte para garantir que o caractere caiba em 10x10 pixels
-                Font font = new Font("Roboto", Font.BOLD, 12);
+                // Define a fonte para garantir que o caractere caiba na celula
+                tamanhoFonte = mapa.getTamanhoCelula() / 10 * 12;
+                Font font = new Font("Roboto", Font.BOLD, tamanhoFonte);
                 g.setFont(font);
                 desenhaMapa(g);
                 desenhaPersonagem(g);
             }
         };
-        mapPanel.setPreferredSize(new Dimension(800, 600));
+        mapPanel.setPreferredSize(new Dimension(width, height));
 
-        // Botões de movimento
-        JButton btnUp = new JButton("Cima (W)");
-        JButton btnDown = new JButton("Baixo (S)");
-        JButton btnRight = new JButton("Direita (D)");
-        JButton btnLeft = new JButton("Esquerda (A)");
-        JButton btnInterect = new JButton("Interagir (E)");
-        JButton btnAttack = new JButton("Ação Secundária (J)");
-
-        // Evita que os botões recebam o foco e interceptem os eventos de teclado
-        btnUp.setFocusable(false);
-        btnDown.setFocusable(false);
-        btnRight.setFocusable(false);
-        btnLeft.setFocusable(false);
-        btnInterect.setFocusable(false);
-        btnAttack.setFocusable(false);
-
-        // Listeners para os botões
-        btnUp.addActionListener(e -> move(Direcao.CIMA));
-        btnDown.addActionListener(e -> move(Direcao.BAIXO));
-        btnRight.addActionListener(e -> move(Direcao.DIREITA));
-        btnLeft.addActionListener(e -> move(Direcao.ESQUERDA));
-        btnInterect.addActionListener(e -> interage());
-        btnAttack.addActionListener(e -> ataca());
-
-        // Layout dos botões
-        JPanel buttonPanel = new JPanel(new GridLayout(2, 2));
-        buttonPanel.add(btnUp);
-        buttonPanel.add(btnDown);
-        buttonPanel.add(btnInterect);
-        buttonPanel.add(btnRight);
-        buttonPanel.add(btnLeft);
-        buttonPanel.add(btnAttack);
+        // Adiciona um listener para redimensionamento da janela
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                ajustaTamanhoCelula();
+            }
+        });
 
         // Barra de status
         statusBar = new JLabel("Posição: (" + mapa.getPosX() + "," + mapa.getPosY() + ") | Moedas: " + numMoedas);
@@ -75,7 +60,6 @@ public class Jogo extends JFrame implements KeyListener {
         // Painel para botões e barra de status
         JPanel southPanel = new JPanel();
         southPanel.setLayout(new BoxLayout(southPanel, BoxLayout.Y_AXIS));
-        southPanel.add(buttonPanel);
         southPanel.add(statusBar);
 
         // Adiciona os paineis ao JFrame
@@ -97,6 +81,37 @@ public class Jogo extends JFrame implements KeyListener {
         mapa.registraElemento('I', new Inimigo('☠', Color.RED, this));
         // Moeda
         mapa.registraElemento('M', new Moeda('♦', Mapa.goldColor));
+
+        ajustaTamanhoCelula();
+    }
+
+    private void ajustaTamanhoCelula() {
+        int mapPanelWidth = mapPanel.getWidth();
+        int numColunas = mapa.getNumColunas();
+        int numLinhas = mapa.getNumLinhas();
+
+        // Calcula o novo tamanho da célula baseado na largura disponível
+        tamanhoCelula = mapPanelWidth / numColunas;
+        mapa.setTamanhoCelula(tamanhoCelula);
+
+        // Calcula a altura baseada na largura e no aspecto
+        int desiredHeight = (mapPanelWidth * numLinhas) / numColunas;
+
+        // Ajusta a altura do painel
+        mapPanel.setPreferredSize(new Dimension(mapPanelWidth, desiredHeight));
+
+        // Recalcula o tamanho da fonte
+        tamanhoFonte = (tamanhoCelula * 12) / 10;
+        mapPanel.setFont(new Font("Roboto", Font.BOLD, tamanhoFonte));
+
+        // Revalida o painel e redimensiona a janela para acomodar todos os componentes
+        mapPanel.revalidate();
+        pack();
+
+        // Redesenha o mapa
+        mapPanel.repaint();
+
+        System.out.println("Largura: " + mapPanelWidth + " Altura: " + desiredHeight + " Colunas: " + numColunas + " Linhas: " + numLinhas + " Tamanho celula: " + tamanhoCelula + " Tamanho fonte: " + tamanhoFonte);
     }
 
     public Mapa getMapa() {
@@ -108,7 +123,7 @@ public class Jogo extends JFrame implements KeyListener {
         for (int i = 0; i < numMoedas; i++) {
             int x = (int) (Math.random() * mapa.getNumColunas());
             int y = (int) (Math.random() * mapa.getNumLinhas());
-            if (mapa.getElemento(x, y) == null) {
+            if (x >= 0 && x < mapa.getNumColunas() && y >= 0 && y < mapa.getNumLinhas() && mapa.getElemento(x, y) == null) {
                 mapa.setElemento('M', x, y);
             }
         }
@@ -180,7 +195,6 @@ public class Jogo extends JFrame implements KeyListener {
                 if (mapa.estaRevelado(j, i)) {
                     ElementoMapa elemento = mapa.getElemento(j, i);
                     if (elemento != null) {
-                        //System.out.println("Elemento: " + elemento.getSimbolo() + " " + elemento.getCor());
                         g.setColor(elemento.getCor());
                         g.drawString(elemento.getSimbolo().toString(), posX, posY);
                     }

@@ -1,60 +1,40 @@
 ################################################################################
-#I   P                       #                 #   ##     #      #   #   #    ##
-#   ####                     #                           ##                    #
-#   ####                                                  #                    #
-#                            #             V              #                    #
-#VVV                           #           V                                   #
-#VVVV    ########            #                            #                    #
-# VVVV   #      #            #                            #                    #
-#  V     #      #            #                            #                    #
-#        #      ###########  #                            #                    #
-#    V   #                   #                            #                    #
-#        #                   #                            #                    #
-#        #####################                            #                    #
-#                            #                            #                    #
-#                  V         #                            #                    #
-#                            #                            #                    #
-#  #######################   #                            #                    #
-#  #                     #   #                            #                    #
-#  #                     #   #                            #                    #
-#  #                     #   #                            #################### #
-#  #                     #####                            #                    #
-#  #                         #                            #                    #
-#  #                         #                            #                    #
-#  #  ########################            VVVVVV           #                   #
-#  #                         #             VVVV           #                    #
-#  #                         #                            #                    #
-#  #                         #                            #                    #
-#  #                         #                            #                    #
-#                            #                            #                    #
-#  ########################################################                    #
-#  #############################################################################
-#             ##             #                 #   ##     #     V#  V#  V#    V#
-#   ####                     #                           ##                    #
-#   ####                                                  #                    #
-#                            #                            #                    #
-#VVV                           #                            #                  #
-#VVVV    ########            #                            #                    #
-# VVVV   #      #            #                            #                    #
-#  V     #      #            #                            #                    #
-#        #      ###########  #                            #                    #
-#        #                   #                            #                    #
-#        #                   #                            #                    #
-#        #####################                            #                    #
-#                            #                            #                    #
-#                            #                            #                    #
-#                            #                            #                    #
-#  #######################   #             VVVV           #                    #
-#  #                     #   #            VVVVV           #                    #
-#  #                     #   #                            #                    #
-#  #                     #   #                            #                    #
-#  #                     #####                            #                    #
-#  #                         #                            #                    #
-#  #                         #                            #                    #
-#  #  ########################                            #                    #
-#  #                         #                            #                    #
-#  #                         #                            #                    #
-#  #                         #                            #                    #
-#  #                         #                            #                    #
-#                            #                            #                    #
+#I   P                        VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#   ####                      VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#   ####                      VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#                             VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#VVV                         #             VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#VVVV    ########            #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+# VVVV   #      #            #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  V     #      #            #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#        #      ###########  #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#    V   #                   #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#        #                   #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#        # ###################            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#                                         VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#                  V         #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#                            #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #######################   #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#                        #   #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #                     #   #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #                         #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #                     #####            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #                         #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #                                      VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #  ########################            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #                         #             VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #                         #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #                         #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #                         #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #                         #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #                         #             VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #                         #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #                         #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #                         #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#                            #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #                                       VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #                                      VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #                                      VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#  #                         #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
+#                            #            VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV#
 ################################################################################
