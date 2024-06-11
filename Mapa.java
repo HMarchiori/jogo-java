@@ -193,12 +193,12 @@ public class Mapa {
     }
 
     public String interage() {
-        //TODO: Implementar
+   
         return "Interage";
     }
 
     public String ataca() {
-        //TODO: Implementar
+   
         return "Ataca";
     }
 
