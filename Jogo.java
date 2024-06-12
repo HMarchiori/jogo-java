@@ -274,10 +274,4 @@ public class Jogo extends JFrame implements KeyListener {
     public void keyReleased(KeyEvent e) {
         // Não necessário
     }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new Jogo("mapa.txt").setVisible(true);
-        });
-    }
 }

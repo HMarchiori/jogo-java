@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.rmi.registry.Registry;
 
 public class Cliente {
@@ -12,6 +13,7 @@ public class Cliente {
             this.clientId = java.util.UUID.randomUUID().toString();
             servidor.registrarCliente(clientId);
             new Thread(this::atualizarStatusJogo).start();
+            iniciarJogo();
         } catch (Exception e) {
             System.err.println("Erro: " + e.getMessage());
             e.printStackTrace();
@@ -29,6 +31,12 @@ public class Cliente {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void iniciarJogo() {
+        SwingUtilities.invokeLater(() -> {
+            new Jogo("mapa.txt").setVisible(true);
+        });
     }
 
     public static void main(String[] args) {
