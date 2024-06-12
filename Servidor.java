@@ -10,7 +10,6 @@ public class Servidor extends UnicastRemoteObject implements InterfaceServidor {
     private Map<String, Integer> numerosSequentes;
 
     public Servidor() throws RemoteException {
-        super();
         statusJogo = new StatusJogo();
         numerosSequentes = new HashMap<>();
     }

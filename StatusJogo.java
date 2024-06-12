@@ -31,12 +31,12 @@ public class StatusJogo implements Serializable{
         return jogoEmAndamento;
     }
 
-    public void adicionaJogador(Jogador jogador){
+    public synchronized void adicionaJogador(Jogador jogador){
         jogadores.add(jogador);
         numJogadores = jogadores.size();
     }
 
-    public void atualizarPosicaoJogador(String id, int x, int y){
+    public synchronized void atualizarPosicaoJogador(String id, int x, int y){
         for(Jogador j : jogadores){
             if(j.getId().equals(id)){
                 j.setPosX(x);
@@ -45,7 +45,7 @@ public class StatusJogo implements Serializable{
         }
     }
 
-    public void atualizarNumeroMoedas(String id){
+    public synchronized void atualizarNumeroMoedas(String id){
         for(Jogador j : jogadores){
             if(j.getId().equals(id)){
                 j.incrementaMoedas();
