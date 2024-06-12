@@ -7,6 +7,7 @@ public class Cliente {
     private InterfaceServidor servidor;
     private StatusJogo statusJogo;
     private String clientId;
+    private Jogo jogo = new Jogo("mapa.txt");
 
 
     private Cliente(String enderecoServidor) {
@@ -15,8 +16,10 @@ public class Cliente {
             servidor = (InterfaceServidor) registry.lookup("servidor");
             this.clientId = java.util.UUID.randomUUID().toString();
             servidor.registrarCliente(clientId);
-            iniciarJogo();
             new Thread(this::atualizarStatusJogo).start();
+            SwingUtilities.invokeLater(() -> {
+                jogo.setVisible(true);
+            });
         } catch (Exception e) {
             System.err.println("Erro: " + e.getMessage());
             e.printStackTrace();
@@ -36,13 +39,7 @@ public class Cliente {
         }
     }
 
-    private void iniciarJogo() {
-            SwingUtilities.invokeLater(() -> {
-                new Jogo("mapa.txt").setVisible(true);
-            });
-        }
     
-
     public static void main(String[] args) {
         if (args.length != 1) {
             System.out.println("Uso: java Cliente <endereco_servidor>");
