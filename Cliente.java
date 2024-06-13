@@ -7,7 +7,7 @@ public class Cliente {
     private InterfaceServidor servidor;
     private StatusJogo statusJogo;
     private String clientId;
-    private Jogo jogo = new Jogo("mapa.txt");
+    private Jogo jogo;
 
 
     private Cliente(String enderecoServidor) {
@@ -16,6 +16,7 @@ public class Cliente {
             servidor = (InterfaceServidor) registry.lookup("servidor");
             this.clientId = java.util.UUID.randomUUID().toString();
             servidor.registrarCliente(clientId);
+            this.jogo = new Jogo("mapa.txt");
             new Thread(this::atualizarStatusJogo).start();
             SwingUtilities.invokeLater(() -> {
                 jogo.setVisible(true);

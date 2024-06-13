@@ -4,6 +4,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.rmi.RemoteException;
 import java.util.Random;
 
 public class Jogo extends JFrame implements KeyListener {
@@ -18,6 +19,9 @@ public class Jogo extends JFrame implements KeyListener {
     private final Color characterColor = Color.BLACK; // Cor preta para o personagem
     private int tamanhoFonte;
     private JPanel mapPanel;
+    private InterfaceServidor servidor;
+    private String clientId;
+    private int numeroSequente = 0;
 
     public Jogo(String arquivoMapa) {
         setTitle("Jogo de Aventura");
@@ -165,6 +169,15 @@ public class Jogo extends JFrame implements KeyListener {
         // Atualiza a barra de status
         if (statusBar != null)
             statusBar.setText(getStatusBarText());
+
+        // Incrementa o número sequente e envia comando ao servidor
+        numeroSequente++;
+        try {
+            servidor.enviarComando(clientId, numeroSequente, mapX, mapY);
+        } catch (RemoteException e) {
+            System.err.println("Erro ao enviar comando: " + e.getMessage());
+            e.printStackTrace();
+        }
 
         // Redesenha o painel
         repaint();
