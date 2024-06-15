@@ -31,6 +31,7 @@ public class Cliente {
         while (true) {
             try {
                 statusJogo = servidor.getStatusJogo();
+                jogo.repaint();
                 System.out.println("Status do jogo: " + statusJogo);
                 Thread.sleep(1000);
             } catch (Exception e) {

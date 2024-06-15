@@ -19,6 +19,7 @@ public class Jogo extends JFrame implements KeyListener {
     private final Color characterColor = Color.BLACK; // Cor preta para o personagem
     private int tamanhoFonte;
     private JPanel mapPanel;
+    private StatusJogo statusJogo;
     private InterfaceServidor servidor;
     private String clientId;
     private int numeroSequente = 0;
@@ -174,6 +175,7 @@ public class Jogo extends JFrame implements KeyListener {
         numeroSequente++;
         try {
             servidor.enviarComando(clientId, numeroSequente, mapX, mapY);
+            statusJogo.atualizarPosicaoJogador(clientId, mapX, mapY);
         } catch (RemoteException e) {
             System.err.println("Erro ao enviar comando: " + e.getMessage());
             e.printStackTrace();

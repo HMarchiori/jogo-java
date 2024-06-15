@@ -6,6 +6,7 @@ public class StatusJogo implements Serializable{
     private static final long serialVersionUID = 1L;
     private List<Jogador> jogadores;
     private Mapa mapa;
+    private Jogo jogo;
     private int numJogadores = 1;
     private boolean jogoEmAndamento = true;
 
@@ -21,6 +22,10 @@ public class StatusJogo implements Serializable{
 
     public Mapa getMapa(){
         return mapa;
+    }
+
+    public Jogo getJogo(){
+        return jogo;
     }
 
     public int getNumJogadores(){
