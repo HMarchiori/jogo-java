@@ -1,6 +1,4 @@
-
 import java.rmi.registry.Registry;
-
 import javax.swing.SwingUtilities;
 
 public class Cliente {
@@ -47,7 +45,6 @@ public class Cliente {
             System.out.println("Uso: java Cliente <endereco_servidor>");
             System.exit(1);
         }
-        new Cliente(args[0]);
         new Cliente(args[0]);
     }
 }
