@@ -30,7 +30,7 @@ public class Cliente {
                 statusJogo = servidor.getStatusJogo();
                 jogo.atualizarStatus(statusJogo);
                 jogo.repaint();
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (Exception e) {
                 System.err.println("Erro: " + e.getMessage());
                 e.printStackTrace();
