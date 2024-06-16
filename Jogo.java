@@ -5,6 +5,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.Random;
 
 public class Jogo extends JFrame implements KeyListener {
@@ -24,7 +25,9 @@ public class Jogo extends JFrame implements KeyListener {
     private String clientId;
     private int numeroSequente = 0;
 
-    public Jogo(String arquivoMapa) {
+    public Jogo(String arquivoMapa, InterfaceServidor servidor, String clientId) {
+        this.servidor = servidor;
+        this.clientId = clientId;
         setTitle("Jogo de Aventura");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFocusable(true);
@@ -46,7 +49,7 @@ public class Jogo extends JFrame implements KeyListener {
                 Font font = new Font("Roboto", Font.BOLD, tamanhoFonte);
                 g.setFont(font);
                 desenhaMapa(g);
-                desenhaPersonagem(g);
+                desenhaPersonagens(g);
             }
         };
         mapPanel.setPreferredSize(new Dimension(width, height));
@@ -93,6 +96,10 @@ public class Jogo extends JFrame implements KeyListener {
 
         // Distribui moedas no mapa de forma aleatória de acordo com a semente
         distibuiMoedas(100, 1L);
+    }
+
+    public void atualizarStatus(StatusJogo statusJogo) {
+        this.statusJogo = statusJogo;
     }
 
     private String getStatusBarText() {
@@ -175,7 +182,6 @@ public class Jogo extends JFrame implements KeyListener {
         numeroSequente++;
         try {
             servidor.enviarComando(clientId, numeroSequente, mapX, mapY);
-            statusJogo.atualizarPosicaoJogador(clientId, mapX, mapY);
         } catch (RemoteException e) {
             System.err.println("Erro ao enviar comando: " + e.getMessage());
             e.printStackTrace();
@@ -249,9 +255,16 @@ public class Jogo extends JFrame implements KeyListener {
         }
     }
 
-    private void desenhaPersonagem(Graphics g) {
-        g.setColor(characterColor);
-        g.drawString("☺", mapa.getPosX(), mapa.getPosY());
+    private void desenhaPersonagens(Graphics g) {
+        if (statusJogo == null) return;
+
+        List<Jogador> jogadores = statusJogo.getJogadores();
+        for (Jogador jogador : jogadores) {
+            g.setColor(characterColor);
+            int posX = jogador.getPosX() * mapa.getTamanhoCelula();
+            int posY = jogador.getPosY() * mapa.getTamanhoCelula() + mapa.getTamanhoCelula();
+            g.drawString("☺", posX, posY);
+        }
     }
 
     @Override
