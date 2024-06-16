@@ -48,5 +48,6 @@ public class Cliente {
             System.exit(1);
         }
         new Cliente(args[0]);
+        new Cliente(args[0]);
     }
 }
