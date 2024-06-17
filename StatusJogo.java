@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
+import java.awt.Color;
 
 public class StatusJogo implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -9,11 +10,13 @@ public class StatusJogo implements Serializable{
     private Jogo jogo;
     private int numJogadores = 1;
     private boolean jogoEmAndamento = true;
+    private Inimigo inimigo;
 
     public StatusJogo(){
         this.jogadores = new ArrayList<>();
         this.numJogadores = jogadores.size();
         this.jogoEmAndamento = true;
+        this.inimigo = new Inimigo('☠', Color.RED, null);
     }
 
     public List<Jogador> getJogadores(){
@@ -58,5 +61,8 @@ public class StatusJogo implements Serializable{
         }
     }
     
+    public synchronized void moveInimigo(int newX, int newY){
+        inimigo.setPosicao(newX, newY);
+    }
 
 }
