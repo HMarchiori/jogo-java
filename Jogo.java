@@ -25,9 +25,8 @@ public class Jogo extends JFrame implements KeyListener {
     private String clientId;
     private int numeroSequente = 0;
 
-    public Jogo(String arquivoMapa, InterfaceServidor servidor, String clientId) {
-
-        this.servidor = servidor;
+    public Jogo(String arquivoMapa, InterfaceServidor interfaceServidor, String clientId) {
+        this.statusJogo = StatusJogo.getInstancia();
         this.clientId = clientId;
         setTitle("Jogo de Aventura");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -148,8 +147,8 @@ public class Jogo extends JFrame implements KeyListener {
             if (x >= 0 && x < mapa.getNumColunas() && y >= 0 && y < mapa.getNumLinhas() && mapa.getElemento(x, y) == null) {
                 mapa.setElemento('M', x, y);
                 ++numeroSequente;
-                statusJogo.getMoedas().add(new Moeda('♦', Mapa.goldColor));
                 try {
+                    statusJogo.getMoedas().add(new Moeda('♦', Mapa.goldColor));
                     servidor.enviarComandoMoedas((Moeda) mapa.getElemento(x, y), numeroSequente, x, y);
                 } catch (RemoteException e) {
                     System.err.println("Erro ao enviar comando: " + e.getMessage());

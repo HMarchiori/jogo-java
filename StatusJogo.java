@@ -3,6 +3,7 @@ import java.util.List;
 import java.io.Serializable;
 
 public class StatusJogo implements Serializable {
+    private static StatusJogo instancia;
     private static final long serialVersionUID = 1L;
     private List<Inimigo> inimigos;
     private List<Jogador> jogadores;
@@ -22,6 +23,14 @@ public class StatusJogo implements Serializable {
         this.numJogadores = jogadores.size();
         this.numInimigos = inimigos.size();
         this.jogoEmAndamento = true;
+    }
+
+    // Método público estático para obter a instância
+     public static StatusJogo getInstancia() {
+        if (instancia == null) {
+            instancia = new StatusJogo();
+        }
+        return instancia;
     }
 
     public List<Jogador> getJogadores(){
