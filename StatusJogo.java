@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
 
-public class StatusJogo implements Serializable{
+public class StatusJogo implements Serializable {
     private static final long serialVersionUID = 1L;
     private List<Inimigo> inimigos;
     private List<Jogador> jogadores;
