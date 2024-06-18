@@ -35,7 +35,7 @@ public class Servidor extends UnicastRemoteObject implements InterfaceServidor {
 
     public synchronized void enviarComandoMoedas(Moeda moeda, int numeroSequente, Integer posX, Integer posY) throws RemoteException {
         if (posX == null || posY == null) {
-            statusJogo.removerMoeda(moeda);
+            removerMoedas(moeda);
         } else {
             statusJogo.atualizarPosicaoMoeda(moeda, posX, posY);
         }
