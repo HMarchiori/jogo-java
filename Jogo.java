@@ -146,6 +146,14 @@ public class Jogo extends JFrame implements KeyListener {
             int y = random.nextInt(mapa.getNumLinhas());
             if (x >= 0 && x < mapa.getNumColunas() && y >= 0 && y < mapa.getNumLinhas() && mapa.getElemento(x, y) == null) {
                 mapa.setElemento('M', x, y);
+                ++numeroSequente;
+                statusJogo.getMoedas().add(new Moeda('♦', Mapa.goldColor));
+                try {
+                    servidor.enviarComandoMoedas((Moeda) mapa.getElemento(x, y), numeroSequente, x, y);
+                } catch (RemoteException e) {
+                    System.err.println("Erro ao enviar comando: " + e.getMessage());
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -172,6 +180,12 @@ public class Jogo extends JFrame implements KeyListener {
         if (elemento instanceof Moeda) {
             numMoedas++;
             mapa.apagaElemento(mapX, mapY);
+            statusJogo.getMoedas().remove(elemento);
+            try {
+                servidor.enviarComandoMoedas((Moeda) elemento, numeroSequente, mapX, mapY);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
 
         // Atualiza a barra de status
@@ -181,7 +195,7 @@ public class Jogo extends JFrame implements KeyListener {
         // Incrementa o número sequente e envia comando ao servidor
         numeroSequente++;
         try {
-            servidor.enviarComando(clientId, numeroSequente, mapX, mapY);
+            servidor.enviarComandoJogadores(clientId, numeroSequente, mapX, mapY);
         } catch (RemoteException e) {
             System.err.println("Erro ao enviar comando: " + e.getMessage());
             e.printStackTrace();

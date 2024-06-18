@@ -22,11 +22,27 @@ public class Servidor extends UnicastRemoteObject implements InterfaceServidor {
         }
     }
 
-    public synchronized void enviarComando(String clientId, int numeroSequente, int posX, int posY) throws RemoteException {
+    public synchronized void enviarComandoJogadores(String clientId, int numeroSequente, int posX, int posY) throws RemoteException {
         if(numerosSequentes.get(clientId) < numeroSequente) {
             numerosSequentes.put(clientId, numeroSequente);
             statusJogo.atualizarPosicaoJogador(clientId, posX, posY);
         }
+    }
+
+    public synchronized void enviarComandoInimigos(Inimigo inimigo, int numeroSequente, int posX, int posY) throws RemoteException {
+        statusJogo.atualizarPosicaoInimigo(inimigo,posX, posY);
+    }
+
+    public synchronized void enviarComandoMoedas(Moeda moeda, int numeroSequente, Integer posX, Integer posY) throws RemoteException {
+        if (posX == null || posY == null) {
+            statusJogo.removerMoeda(moeda);
+        } else {
+            statusJogo.atualizarPosicaoMoeda(moeda, posX, posY);
+        }
+    }
+
+    public synchronized void removerMoedas(Moeda moeda) throws RemoteException {
+        statusJogo.removerMoeda(moeda);
     }
 
     public synchronized StatusJogo getStatusJogo() throws RemoteException {

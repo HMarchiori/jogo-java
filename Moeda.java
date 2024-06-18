@@ -3,10 +3,14 @@ import java.awt.Color;
 public class Moeda implements ElementoMapa {
     private Color cor;
     private Character simbolo;
+    private int x;
+    private int y;
 
     public Moeda(Character simbolo, Color cor) {
         this.simbolo = simbolo;
         this.cor = cor;
+        this.x = 1;
+        this.y = 1;
     }
     
     @Override
@@ -32,5 +36,18 @@ public class Moeda implements ElementoMapa {
     @Override
     public String interage() {
         return null;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setPosicao(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 }

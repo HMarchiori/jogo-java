@@ -1,6 +1,8 @@
 import java.awt.Color;
+import java.rmi.RemoteException;
 
 public class Inimigo implements ElementoMapa, Runnable {
+    private Servidor servidor;
     private Color cor;
     private Character simbolo;
     private int x = 1;
@@ -9,8 +11,10 @@ public class Inimigo implements ElementoMapa, Runnable {
     private Thread thread;
     private boolean movendoDireita = true;
     private boolean moverParaBaixo = true;
+    private int numeroSequente = 0;
 
     public Inimigo(Character simbolo, Color cor, Jogo jogo) {
+        this.numeroSequente = 0;
         this.simbolo = simbolo;
         this.cor = cor;
         this.jogo = jogo;
@@ -119,7 +123,13 @@ public class Inimigo implements ElementoMapa, Runnable {
         if (!movido) {
             moverParaBaixo = !moverParaBaixo;
         }
-
+        ++numeroSequente;
+         try {
+            servidor.enviarComandoInimigos(this, numeroSequente, x, y);
+        } catch (RemoteException e) {
+            System.err.println("Erro ao enviar comando: " + e.getMessage());
+            e.printStackTrace();
+        }
         jogo.verificaProximidade(this);
         jogo.repaint();
     }
