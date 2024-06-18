@@ -28,6 +28,8 @@ public class Jogo extends JFrame implements KeyListener {
     public Jogo(String arquivoMapa, InterfaceServidor interfaceServidor, String clientId) {
         this.statusJogo = StatusJogo.getInstancia();
         this.clientId = clientId;
+        this.servidor = interfaceServidor;
+
         setTitle("Jogo de Aventura");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFocusable(true);

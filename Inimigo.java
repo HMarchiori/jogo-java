@@ -2,7 +2,6 @@ import java.awt.Color;
 import java.rmi.RemoteException;
 
 public class Inimigo implements ElementoMapa, Runnable {
-    private Servidor servidor;
     private Color cor;
     private Character simbolo;
     private int x = 1;
@@ -12,6 +11,7 @@ public class Inimigo implements ElementoMapa, Runnable {
     private boolean movendoDireita = true;
     private boolean moverParaBaixo = true;
     private int numeroSequente = 0;
+    private static InterfaceServidor servidor;
 
     public Inimigo(Character simbolo, Color cor, Jogo jogo) {
         this.numeroSequente = 0;
@@ -20,6 +20,11 @@ public class Inimigo implements ElementoMapa, Runnable {
         this.jogo = jogo;
         this.thread = new Thread(this);
         this.thread.start();
+    }
+
+    // Método estático para configurar o servidor
+    public static void setServidor(InterfaceServidor servidor) {
+        Inimigo.servidor = servidor;
     }
 
     public int getX() {
