@@ -26,7 +26,7 @@ public class Jogo extends JFrame implements KeyListener {
     private int numeroSequente = 0;
 
     public Jogo(String arquivoMapa, InterfaceServidor servidor, String clientId) {
-        this.statusJogo = statusJogo;
+
         this.servidor = servidor;
         this.clientId = clientId;
         setTitle("Jogo de Aventura");
