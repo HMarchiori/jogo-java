@@ -1,6 +1,7 @@
 import java.awt.Color;
+import java.io.Serializable;
 
-public class Moeda implements ElementoMapa {
+public class Moeda implements ElementoMapa, Serializable {
     private Color cor;
     private Character simbolo;
     private int x;

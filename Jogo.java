@@ -90,7 +90,7 @@ public class Jogo extends JFrame implements KeyListener {
         // Vegetação
         mapa.registraElemento('V', new Vegetacao('♣', Mapa.vegetationColor));
         // Inimigo
-        mapa.registraElemento('I', new Inimigo('☠', Color.RED, this));
+        mapa.registraElemento('I', new Inimigo('☠', Color.RED,servidor, this));
         // Moeda
         mapa.registraElemento('M', new Moeda('♦', Mapa.goldColor));
 
@@ -162,7 +162,15 @@ public class Jogo extends JFrame implements KeyListener {
 
     public void movimentaInimigo() {
         Inimigo inimigo = (Inimigo) mapa.getElemento('I');
+        Inimigo.setServidor(servidor);
         if (inimigo != null) {
+            ++numeroSequente;
+            try {
+                servidor.enviarComandoInimigos(inimigo, numeroSequente, inimigo.getX(), inimigo.getY());
+            } catch (RemoteException e) {
+                System.err.println("Erro ao enviar comando: " + e.getMessage());
+                e.printStackTrace();
+            }
             inimigo.run();
         }
     }
