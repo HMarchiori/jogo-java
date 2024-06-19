@@ -29,6 +29,13 @@ public class Cliente {
             try {
                 statusJogo = servidor.getStatusJogo();
                 jogo.atualizarStatus(statusJogo);
+
+                // Obter a posição do inimigo do statusJogo e atualizar no cliente
+                Inimigo inimigo = statusJogo.getInimigo();
+                if (inimigo != null) {
+                    jogo.atualizarPosicaoInimigo(inimigo.getX(), inimigo.getY());
+                }
+
                 jogo.repaint();
                 Thread.sleep(100);
             } catch (Exception e) {

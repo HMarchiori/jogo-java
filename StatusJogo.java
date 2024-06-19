@@ -1,14 +1,15 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.io.Serializable;
 
-public class StatusJogo implements Serializable{
+public class StatusJogo implements Serializable {
     private static final long serialVersionUID = 1L;
     private List<Jogador> jogadores;
     private Mapa mapa;
     private Jogo jogo;
     private int numJogadores = 1;
     private boolean jogoEmAndamento = true;
+    private Inimigo inimigo;
 
     public StatusJogo(){
         this.jogadores = new ArrayList<>();
@@ -58,4 +59,11 @@ public class StatusJogo implements Serializable{
         }
     }
 
+    public Inimigo getInimigo() {
+        return inimigo;
+    }
+
+    public void setInimigo(Inimigo inimigo) {
+        this.inimigo = inimigo;
+    }
 }

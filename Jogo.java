@@ -88,7 +88,7 @@ public class Jogo extends JFrame implements KeyListener {
         // Vegetação
         mapa.registraElemento('V', new Vegetacao('♣', Mapa.vegetationColor));
         // Inimigo
-        mapa.registraElemento('I', new Inimigo('☠', Color.RED, this));
+        mapa.registraElemento('I', new Inimigo(5, 5)); // Inicializa o inimigo com posição padrão
         // Moeda
         mapa.registraElemento('M', new Moeda('♦', Mapa.goldColor));
 
@@ -150,10 +150,12 @@ public class Jogo extends JFrame implements KeyListener {
         }
     }
 
-    public void movimentaInimigo() {
-        Inimigo inimigo = (Inimigo) mapa.getElemento('I');
+    public void atualizarPosicaoInimigo(int x, int y) {
+        Inimigo inimigo = statusJogo.getInimigo();
         if (inimigo != null) {
-            inimigo.run();
+            inimigo.setX(x);
+            inimigo.setY(y);
+            mapa.setElemento('I', x, y); // Atualiza a posição do inimigo no mapa
         }
     }
 
@@ -264,6 +266,14 @@ public class Jogo extends JFrame implements KeyListener {
             int posX = jogador.getPosX() * mapa.getTamanhoCelula();
             int posY = jogador.getPosY() * mapa.getTamanhoCelula() + mapa.getTamanhoCelula();
             g.drawString("☺", posX, posY);
+        }
+
+        Inimigo inimigo = statusJogo.getInimigo();
+        if (inimigo != null) {
+            g.setColor(Color.RED);
+            int posX = inimigo.getX() * mapa.getTamanhoCelula();
+            int posY = inimigo.getY() * mapa.getTamanhoCelula() + mapa.getTamanhoCelula();
+            g.drawString("☠", posX, posY);
         }
     }
 
