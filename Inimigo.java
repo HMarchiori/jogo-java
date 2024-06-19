@@ -8,7 +8,6 @@ public class Inimigo implements ElementoMapa, Runnable, Serializable {
     private int x = 1;
     private int y = 1;
     private Jogo jogo;
-    private transient Thread thread;
     private boolean movendoDireita = true;
     private boolean moverParaBaixo = true;
     private int numeroSequente = 0;
@@ -20,8 +19,6 @@ public class Inimigo implements ElementoMapa, Runnable, Serializable {
         this.simbolo = simbolo;
         this.cor = cor;
         this.jogo = jogo;
-        this.thread = new Thread(this);
-        this.thread.start();
     }
 
     public static void setServidor(InterfaceServidor servidor) {
@@ -65,6 +62,7 @@ public class Inimigo implements ElementoMapa, Runnable, Serializable {
     public String interage() {
         return null;
     }
+
 
     @Override
     public void run() {

@@ -98,6 +98,7 @@ public class Jogo extends JFrame implements KeyListener {
 
         // Distribui moedas no mapa de forma aleatória de acordo com a semente
         distibuiMoedas(100, 1L);
+        movimentaInimigo();
     }
 
     public void atualizarStatus(StatusJogo statusJogo) {
@@ -160,10 +161,12 @@ public class Jogo extends JFrame implements KeyListener {
         }
     }
 
-    public void movimentaInimigo() {
+    public synchronized void movimentaInimigo() {
         Inimigo inimigo = (Inimigo) mapa.getElemento('I');
         Inimigo.setServidor(servidor);
         if (inimigo != null) {
+            Thread inimigoThread = new Thread(inimigo);
+            inimigoThread.start();
             ++numeroSequente;
             try {
                 servidor.enviarComandoInimigos(inimigo, numeroSequente, inimigo.getX(), inimigo.getY());
@@ -171,7 +174,6 @@ public class Jogo extends JFrame implements KeyListener {
                 System.err.println("Erro ao enviar comando: " + e.getMessage());
                 e.printStackTrace();
             }
-            inimigo.run();
         }
     }
 
