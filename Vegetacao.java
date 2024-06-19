@@ -1,6 +1,7 @@
 import java.awt.Color;
+import java.io.Serializable;
 
-public class Vegetacao implements ElementoMapa {
+public class Vegetacao implements ElementoMapa , Serializable {
     private Color cor;
     private Character simbolo;
 

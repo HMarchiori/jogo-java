@@ -1,6 +1,7 @@
 import java.awt.Color;
+import java.io.Serializable;
 
-public class Parede implements ElementoMapa {
+public class Parede implements ElementoMapa, Serializable {
     private Color cor;
     private Character simbolo;
 

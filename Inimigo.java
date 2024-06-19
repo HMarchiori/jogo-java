@@ -2,19 +2,19 @@ import java.awt.Color;
 import java.io.Serializable;
 import java.rmi.RemoteException;
 
-public class Inimigo implements ElementoMapa, Runnable, Serializable{
+public class Inimigo implements ElementoMapa, Runnable, Serializable {
     private Color cor;
     private Character simbolo;
     private int x = 1;
     private int y = 1;
     private Jogo jogo;
-    private Thread thread;
+    private transient Thread thread;
     private boolean movendoDireita = true;
     private boolean moverParaBaixo = true;
     private int numeroSequente = 0;
     private static InterfaceServidor servidor;
 
-    public Inimigo(Character simbolo, Color cor,InterfaceServidor servidor, Jogo jogo) {
+    public Inimigo(Character simbolo, Color cor, InterfaceServidor servidor, Jogo jogo) {
         Inimigo.servidor = servidor;
         this.numeroSequente = 0;
         this.simbolo = simbolo;
@@ -72,6 +72,7 @@ public class Inimigo implements ElementoMapa, Runnable, Serializable{
             try {
                 Thread.sleep(300);
                 moverInimigo();
+                jogo.repaint(); // Repinta o jogo após o movimento do inimigo
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -87,12 +88,7 @@ public class Inimigo implements ElementoMapa, Runnable, Serializable{
                 setPosicao(x + 1, y);
                 movido = true;
                 ++numeroSequente;
-                try {
-                    servidor.enviarComandoInimigos(this, numeroSequente, x, y);
-                } catch (RemoteException e) {
-                    System.err.println("Erro ao enviar comando: " + e.getMessage());
-                    e.printStackTrace();
-                }
+                enviarComandoParaServidor();
             } else {
                 // Se não puder mover para a direita, mover para baixo ou para cima
                 if (moverParaBaixo) {
@@ -101,12 +97,7 @@ public class Inimigo implements ElementoMapa, Runnable, Serializable{
                         movendoDireita = false;
                         movido = true;
                         ++numeroSequente;
-                        try {
-                            servidor.enviarComandoInimigos(this, numeroSequente, x, y);
-                        } catch (RemoteException e) {
-                            System.err.println("Erro ao enviar comando: " + e.getMessage());
-                            e.printStackTrace();
-                        }
+                        enviarComandoParaServidor();
                     }
                 } else {
                     if (jogo.getMapa().moveElemento(x, y, x, y - 1)) {
@@ -114,12 +105,7 @@ public class Inimigo implements ElementoMapa, Runnable, Serializable{
                         movendoDireita = false;
                         movido = true;
                         ++numeroSequente;
-                        try {
-                            servidor.enviarComandoInimigos(this, numeroSequente, x, y);
-                        } catch (RemoteException e) {
-                            System.err.println("Erro ao enviar comando: " + e.getMessage());
-                            e.printStackTrace();
-                        }
+                        enviarComandoParaServidor();
                     }
                 }
             }
@@ -129,12 +115,7 @@ public class Inimigo implements ElementoMapa, Runnable, Serializable{
                 setPosicao(x - 1, y);
                 movido = true;
                 ++numeroSequente;
-                try {
-                    servidor.enviarComandoInimigos(this, numeroSequente, x, y);
-                } catch (RemoteException e) {
-                    System.err.println("Erro ao enviar comando: " + e.getMessage());
-                    e.printStackTrace();
-                }
+                enviarComandoParaServidor();
             } else {
                 // Se não puder mover para a esquerda, mover para baixo ou para cima
                 if (moverParaBaixo) {
@@ -143,12 +124,7 @@ public class Inimigo implements ElementoMapa, Runnable, Serializable{
                         movendoDireita = true;
                         movido = true;
                         ++numeroSequente;
-                        try {
-                            servidor.enviarComandoInimigos(this, numeroSequente, x, y);
-                        } catch (RemoteException e) {
-                            System.err.println("Erro ao enviar comando: " + e.getMessage());
-                            e.printStackTrace();
-                        }
+                        enviarComandoParaServidor();
                     }
                 } else {
                     if (jogo.getMapa().moveElemento(x, y, x, y - 1)) {
@@ -156,12 +132,7 @@ public class Inimigo implements ElementoMapa, Runnable, Serializable{
                         movendoDireita = true;
                         movido = true;
                         ++numeroSequente;
-                        try {
-                            servidor.enviarComandoInimigos(this, numeroSequente, x, y);
-                        } catch (RemoteException e) {
-                            System.err.println("Erro ao enviar comando: " + e.getMessage());
-                            e.printStackTrace();
-                        }
+                        enviarComandoParaServidor();
                     }
                 }
             }
@@ -170,15 +141,16 @@ public class Inimigo implements ElementoMapa, Runnable, Serializable{
         // Se estiver bloqueado (incapaz de se mover), alternar moverParaBaixo e tentar novamente
         if (!movido) {
             moverParaBaixo = !moverParaBaixo;
+            enviarComandoParaServidor();
         }
-        ++numeroSequente;
-         try {
+    }
+
+    private void enviarComandoParaServidor() {
+        try {
             servidor.enviarComandoInimigos(this, numeroSequente, x, y);
         } catch (RemoteException e) {
-            System.err.println("Erro ao enviar comando: " + e.getMessage());
+            System.err.println("Erro ao enviar comando para o servidor: " + e.getMessage());
             e.printStackTrace();
         }
-        jogo.verificaProximidade(this);
-        jogo.repaint();
     }
 }
