@@ -1,6 +1,8 @@
 import java.awt.Color;
+import java.util.UUID;
 
 public class Inimigo implements ElementoMapa, Runnable {
+    private String id;
     private Color cor;
     private Character simbolo;
     private int x = 1;
@@ -11,11 +13,16 @@ public class Inimigo implements ElementoMapa, Runnable {
     private boolean moverParaBaixo = true;
 
     public Inimigo(Character simbolo, Color cor, Jogo jogo) {
+        this.id = UUID.randomUUID().toString();
         this.simbolo = simbolo;
         this.cor = cor;
         this.jogo = jogo;
         this.thread = new Thread(this);
         this.thread.start();
+    }
+
+    public String getId() {
+        return id;
     }
 
     public int getX() {

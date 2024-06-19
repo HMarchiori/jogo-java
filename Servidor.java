@@ -2,7 +2,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Map;
 import java.util.HashMap;
-
+import java.awt.Color;
 
 public class Servidor extends UnicastRemoteObject implements InterfaceServidor {
     private static final long serialVersionUID = 1L;
@@ -18,7 +18,9 @@ public class Servidor extends UnicastRemoteObject implements InterfaceServidor {
         if(!numerosSequentes.containsKey(clientId)) {
             numerosSequentes.put(clientId, 0);
             Jogador jogador = new Jogador(clientId);
+            Inimigo inimigo = new Inimigo('☠', Color.RED, null);
             statusJogo.adicionaJogador(jogador);
+            statusJogo.adicionaInimigo(inimigo);
         }
     }
 
