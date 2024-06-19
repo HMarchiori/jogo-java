@@ -1,0 +1,26 @@
+// .vscode/tasks.json
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compilar Projeto",
+            "type": "shell",
+            "command": "javac",
+            "args": [
+                "-source",
+                "1.8",
+                "-target",
+                "1.8",
+                "-d",
+                "bin",
+                "${workspaceFolder}/**/*.java"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$javac"],
+            "detail": "Compilar todos os arquivos Java do projeto"
+        }
+    ]
+}

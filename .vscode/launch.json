@@ -1,0 +1,23 @@
+// .vscode/launch.json
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Executar Servidor",
+            "request": "launch",
+            "mainClass": "Servidor",
+            "cwd": "${workspaceFolder}",
+            "console": "integratedTerminal"
+        },
+        {
+            "type": "java",
+            "name": "Executar Cliente",
+            "request": "launch",
+            "mainClass": "Cliente",
+            "cwd": "${workspaceFolder}",
+            "args": ["localhost"],
+            "console": "integratedTerminal"
+        }
+    ]
+}
