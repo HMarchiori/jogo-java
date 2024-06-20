@@ -35,6 +35,7 @@ public class Servidor extends UnicastRemoteObject implements InterfaceServidor {
 
     public static void main(String[] args) {
         try {
+            System.setProperty("java.rmi.server.hostname", "0.0.0.0");
             Servidor servidor = new Servidor();
             java.rmi.registry.LocateRegistry.createRegistry(1099);
             java.rmi.registry.LocateRegistry.getRegistry().rebind("servidor", servidor);
