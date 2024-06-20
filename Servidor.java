@@ -1,4 +1,5 @@
 import java.rmi.RemoteException;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Map;
 import java.util.HashMap;
@@ -35,9 +36,10 @@ public class Servidor extends UnicastRemoteObject implements InterfaceServidor {
 
     public static void main(String[] args) {
         try {
-            System.setProperty("java.rmi.server.hostname", "0.0.0.0");
+            System.setProperty("java.rmi.server.hostname", "10.32.162.202");
             Servidor servidor = new Servidor();
-            java.rmi.registry.LocateRegistry.createRegistry(1099);
+            Registry registry = java.rmi.registry.LocateRegistry.createRegistry(1099);
+            registry.rebind("servidor", servidor);
             java.rmi.registry.LocateRegistry.getRegistry().rebind("servidor", servidor);
             System.out.println("Servidor pronto");
         } catch (Exception e) {
